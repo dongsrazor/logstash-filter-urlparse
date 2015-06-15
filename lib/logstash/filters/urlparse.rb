@@ -36,9 +36,15 @@ class LogStash::Filters::Urlparse < LogStash::Filters::Base
     end
 
     if @http_request
-      u = URI(event[@http_request])
-      event["path"] = u.path
-      event["query"] = u.query
+      request = event[@http_request]
+      begin
+        u = URI(request)
+      rescue
+        request = URI.escape(request)
+        u = URI.parse(request)
+      end
+        event["path"] = u.path
+        event["query"] = u.query
     end
 
     # filter_matched should go in the last line of our successful code
