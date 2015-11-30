@@ -40,8 +40,12 @@ class LogStash::Filters::Urlparse < LogStash::Filters::Base
       begin
         u = URI(request)
       rescue
-        request = URI.escape(request)
-        u = URI.parse(request)
+        begin
+          request = URI.escape(request)
+          u = URI.parse(request)
+        rescue
+          u = URI.parse("")
+        end
       end
         event["path"] = u.path
         event["query"] = u.query
