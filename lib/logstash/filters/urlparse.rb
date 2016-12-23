@@ -31,8 +31,8 @@ class LogStash::Filters::Urlparse < LogStash::Filters::Base
 
     if @request_headers
       host, referer = event.get(@request_headers).split("|")
-      event.set("host") = host
-      event.set("referer") = referer
+      event.set("host", host)
+      event.set("referer", referer)
     end
 
     if @http_request
@@ -47,8 +47,8 @@ class LogStash::Filters::Urlparse < LogStash::Filters::Base
           u = URI.parse("")
         end
       end
-        event.set("path") = u.path
-        event.set("query") = u.query
+        event.set("path", u.path)
+        event.set("query", u.query)
     end
 
     # filter_matched should go in the last line of our successful code
